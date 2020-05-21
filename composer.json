@@ -1,5 +1,5 @@
 {
-    "name": "freddyhaddad/paypal-ipn-bundle",
+    "name": "vkurko/paypal-ipn-bundle",
     "type": "symfony-bundle",
     "description": "A Symfony2 bundle for retrieving and logging PayPal Instant Payment Notifications (PayPal IPNs)",
     "keywords": ["payment", "paypal", "ipn"],
