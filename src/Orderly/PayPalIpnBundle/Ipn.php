@@ -136,7 +136,7 @@ class Ipn
         $this->transactionType = null;
 
         $usingCache = FALSE;
-        $request = $this->_sc->get('request');
+        $request = $this->_sc->get('request_stack')->getCurrentRequest();
 
         //get post parameters
         $parameters = $request->request->all();
@@ -189,7 +189,7 @@ class Ipn
 
         // Now we need to check that we haven't received this message from PayPal before.
         // Luckily we store an md5 hash of each IPN dataset so we can cross-check whether this one is new.
-        $ipnDataHash = md5(serialize($ipnDataRaw));
+        $ipnDataHash = md5(serialize($this->ipnData));
         if (!$usingCache && $this->_checkForDuplicates($ipnDataHash)) {
             $this->_logTransaction('IPN', 'ERROR', 'This is a duplicate call: md5 hash ' . $ipnDataHash . ' already logged');
             
@@ -343,7 +343,7 @@ class Ipn
                 $this->orderItems[$i]->setQuantity($this->ipnData['quantity' . $suffix]);
             if(isset($this->ipnData['mc_gross' . $suffixUnderscore]))
                 $this->orderItems[$i]->setMcGross($this->ipnData['mc_gross' . $suffixUnderscore]);
-            if(isset($this->ipnData['mc_gross' . $suffixUnderscore]) && isset($this->ipnData['quantity' . $suffix]))
+            if(isset($this->ipnData['mc_gross' . $suffixUnderscore]) && isset($this->ipnData['quantity' . $suffix]) && $this->ipnData['quantity' . $suffix])
                 $this->orderItems[$i]->setCostPerItem(floatval($this->ipnData['mc_gross' . $suffixUnderscore]) / intval($this->ipnData['quantity' . $suffix])); // Should be fine because quantity can never be 0
             
             // Update the total before the discount was applied
