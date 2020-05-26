@@ -23,7 +23,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Orderly\PayPalIpnBundle\Entity\IpnOrders
  *
- * @ORM\Table(name="ipn_orders")
+ * @ORM\Table(name="ipn_orders", indexes={
+ *     @ORM\Index(name="IDX_CUSTOM", columns={"custom"}),
+ *     @ORM\Index(name="IDX_MEMO", columns={"memo"}),
+ *     @ORM\Index(name="IDX_PAYER_EMAIL", columns={"payer_email"}),
+ *     @ORM\Index(name="IDX_TXN_ID", columns={"txn_id"})
+ * })
  * @ORM\Entity
  */
 class IpnOrders
